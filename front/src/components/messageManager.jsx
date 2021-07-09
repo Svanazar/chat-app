@@ -6,12 +6,11 @@ function MessageManager(props){
   const {socket} = useContext(SocketContext)
   const [chatMap, setChatMap] = useState({})
   const [loadStatus, setLoadStatus] = useState('begin:new')
-  const {selChatId} = props
-
-
+  const {selChatId, hasNew, updateHasNew} = props
+  
   useEffect(() => {
-    if(selChatId) setLoadStatus('begin:new')
-  }, [selChatId])
+    if(selChatId && hasNew) setLoadStatus('begin:new')
+  }, [selChatId, hasNew])
   
   useEffect(() => {
     if(selChatId){
@@ -32,6 +31,7 @@ function MessageManager(props){
               return {...chatMap, [selChatId]: messages.concat(resp.body)}
             })
             setLoadStatus('succeeded')
+            updateHasNew()
           }
           else {
             setChatMap(chatMap => ({...chatMap, [selChatId]: chatMap[selChatId] || []}))
@@ -41,7 +41,7 @@ function MessageManager(props){
         setLoadStatus('loading')
       }
     }
-  }, [socket, chatMap, loadStatus, selChatId])
+  }, [socket, chatMap, hasNew, updateHasNew, loadStatus, selChatId])
 
   useEffect(() => {
     const listener = (newMessage) => {

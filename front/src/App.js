@@ -1,7 +1,7 @@
 import './App.css';
 import {SocketProvider} from './context/socketContext'
 import {UserProvider} from './context/userContext'
-import ChatList from './components/chatList'
+import ChatManager from './components/chatManager'
 import UserField from './components/userField'
 
 function App() {
@@ -9,7 +9,7 @@ function App() {
     <UserProvider>
       <SocketProvider>
         <UserField />
-        <ChatList />     
+        <ChatManager />     
       </SocketProvider>
     </UserProvider>
   );
