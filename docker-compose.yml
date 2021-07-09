@@ -1,0 +1,33 @@
+services:
+  back:
+    build:
+      context: ./back
+    image: chatapp
+    command: npm start
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./back:/app
+  
+  db:
+    image: mysql
+    environment:
+      MYSQL_DATABASE: 'chatapp'
+      MYSQL_ROOT_PASSWORD: blalbalba
+    ports:
+      - "8000:3306"
+    volumes:
+      - dbvol:/var/lib/mysql
+  
+  front:
+    image: node:16.3.0
+    user: node
+    working_dir: /app
+    command: yarn start
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./front:/app
+  
+volumes:
+  dbvol:
