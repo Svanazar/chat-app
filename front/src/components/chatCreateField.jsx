@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react'
 import SocketContext from '../context/socketContext'
 
+import styles from './chatCreateField.module.css'
+
 function ChatCreateField(props){
   const [content, setContent] = useState("")
   const [reqStatus, setReqStatus] = useState("succeeded")
@@ -32,15 +34,11 @@ function ChatCreateField(props){
   }
 
   return (
-    <>
+    <div className={styles.container}>
     <form onSubmit={handleSubmit}>
-      <label>
-        new chat with user:
-        <input type="text" value={content} onChange={handleInputChange} />
-      </label>
-      <input type="submit" value="create"/>
+        <input className={styles.queryInput} placeholder="Enter User to create chat" type="text" value={content} onChange={handleInputChange} />
     </form>
-    </>
+    </div>
   )
 }
 

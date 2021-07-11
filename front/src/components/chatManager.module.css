@@ -1,0 +1,12 @@
+.mainLayout{
+    display: grid;
+    grid-template-columns: minmax(40px, 1fr) 4fr;
+}
+
+.sideBar{
+    grid-column: 1 / 2;
+}
+
+.midPane{
+    grid-column: 2 / -1;
+}

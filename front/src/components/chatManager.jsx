@@ -1,11 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react'
 import SocketContext from '../context/socketContext'
 import UserContext from '../context/userContext'
-import ChatCreateField from './chatCreateField'
 import MessageManager from './messageManager'
+import ChatList from './chatList'
 import ChatItem from './chatItem'
 
-function ChatList(props) {
+import styles from './chatManager.module.css'
+
+function ChatManager(props) {
   //TODO: for 'message:new', if the chat doesn't exist then a new chat should be created
   const {socket} = useContext(SocketContext)
   const {user: userId} = useContext(UserContext)
@@ -58,18 +60,21 @@ function ChatList(props) {
     setChatIds(chatIds => chatIds.concat(newChat.id))
   }
 
-  const chatList = <ul>{chatIds.map(id => <ChatItem key={id} chat={chats[id]} isSelected={selectedId === id} setSelected={() => setSelectedId(id)}/>)}</ul>
+  const chatList = chatIds.map(id => <ChatItem key={id} chat={chats[id]} isSelected={selectedId === id} setSelected={() => setSelectedId(id)}/>)
 
   return (
-    <>
-    {chatIds.length > 0 ? chatList : "NOTHING HERE"}
-    <ChatCreateField append={appendChat}/>
-    {selectedId
-    ? <MessageManager selChatId={selectedId} hasNew={chats[selectedId].hasNew} updateHasNew={() => setChats(chats => ({...chats, [selectedId]: {...chats[selectedId], hasNew:false}}))}/>
-    : "Select chat to view messages"
-    }
-    </>
+    <div className={styles.mainLayout}>
+      <div className={styles.sideBar}>
+        <ChatList chats={chatList} append={appendChat} />
+      </div>
+      <div className={styles.midPane}>
+        {selectedId
+        ? <MessageManager selChatId={selectedId} hasNew={chats[selectedId].hasNew} updateHasNew={() => setChats(chats => ({...chats, [selectedId]: {...chats[selectedId], hasNew:false}}))}/>
+        : "Select chat to view messages"
+        }
+      </div>
+    </div>
   )
 }
 
-export default ChatList
+export default ChatManager
