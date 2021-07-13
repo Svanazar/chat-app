@@ -1,0 +1,33 @@
+.container {
+    padding: 10px;
+}
+
+.fromUser {
+    display:flex;
+    justify-content: flex-end;
+}
+
+.blob {
+    position: relative;
+    padding: 10px;
+    padding-bottom: 15px;
+    padding-right: 20px;
+    display: inline-block;
+    border: 0.5px solid black;
+}
+
+.username {
+    font-size: 14px;
+}
+
+.content {
+    font-size: 14px;
+}
+
+.time {
+    text-align: right;
+    position:absolute;
+    bottom: 0;
+    right: 2px;
+    font-size: 12px
+}

@@ -1,8 +1,13 @@
 import React, {useState, useContext, useEffect} from 'react'
 import SocketContext from '../context/socketContext'
 import MessageBox from './messageBox'
+import MessageItem from './messageItem'
+import UserContext from '../context/userContext'
+
+import styles from './messageManager.module.css'
 
 function MessageManager(props){
+  const {user: userId} = useContext(UserContext)
   const {socket} = useContext(SocketContext)
   const [chatMap, setChatMap] = useState({})
   const [loadStatus, setLoadStatus] = useState('begin:new')
@@ -53,10 +58,13 @@ function MessageManager(props){
     return () => socket.off("message:new", listener)
   }, [socket, selChatId])
 
-  const messageList = chatMap[selChatId] ? chatMap[selChatId].map((message) => <li key={message.id}>{message.source} : {message.content} @ {message.created}</li>) : [] 
+  const messageList = chatMap[selChatId] ? chatMap[selChatId].map(message => <MessageItem key={message.id} message={message} fromUser={message.source === parseInt(userId, 10)} />) : [] 
+  
   return (
     <>
-    {messageList.length> 0 ? <ul>{messageList}</ul> : "EMPTY"}
+    <div className={styles.messagePane}>
+      {messageList.length> 0 ? <ul>{messageList}</ul> : "EMPTY"}
+    </div>
     <MessageBox chatId={selChatId} append={(data) => setChatMap(chatMap => ({...chatMap, [selChatId]: chatMap[selChatId].concat(data)}))} />
     </>
   )
