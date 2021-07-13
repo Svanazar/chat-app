@@ -5,7 +5,7 @@ import SocketContext from '../context/socketContext'
 function MessageBox(props){
   const [content, setContent] = useState("")
   const [reqStatus, setReqStatus] = useState("succeeded")
-  const {user: userId} = useContext(UserContext)
+  const {userId} = useContext(UserContext)
   const {socket} = useContext(SocketContext)
   const {chatId, append} = props
 

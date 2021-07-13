@@ -1,18 +1,27 @@
 const {Server} = require('socket.io')
+const UserService = require('../services/userService')
 const ChatService = require('../services/chatService')
 const socketMapService = require('../services/socketMapService')
 
 module.exports = (server) => {
   const io = new Server(server)
-  io.use((socket, next) => {
-    const {user: userId} = socket.handshake.auth
-    socket.userId = userId
-    next()
+  io.use(async (socket, next) => {
+    const {username} = socket.handshake.auth
+    try{
+      const userId = await UserService.getUserId(username)
+      socket.userId = userId
+      return next()
+    } catch(e){
+      return next(new Error(e.message))
+    }
   })
+
   io.on('connection', (socket) => {
     const userId = socket.userId
     console.log(`user ${userId} vi socket ${socket.id} connected`)
     socketMapService.addUserId(userId, socket.id)
+
+    socket.emit('session', {userId})
 
     socket.on("disconnect", () => {
       console.log(`user ${userId} vi socket ${socket.id} disconnected`)

@@ -6,6 +6,12 @@ async function createUser(username){
   return createdUser[0]
 }
 
+async function getUserId(username){
+  const user = await db.select('id').from(tb_users).whereRaw(`username = "${username}"`)
+  if(user.length == 0) throw new Error(`username ${username} does not exist`)
+  return user[0].id
+}
+
 async function getOnlineUsers(){
   const userList = await db.select().from(tb_users)
   return userList
@@ -18,6 +24,7 @@ async function getChats(userId){
 
 module.exports = {
   createUser,
+  getUserId,
   getOnlineUsers,
   getChats
 }

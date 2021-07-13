@@ -4,7 +4,7 @@ const ChatService = require('../services/chatService')
 
 const router = express.Router()
 
-router.get('/createUser', async (req, res) => {
+router.post('/user', async (req, res) => {
   try {
     const { username } = req.body
     const createdUserId = await UserService.createUser(username)

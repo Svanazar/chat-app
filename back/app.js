@@ -7,11 +7,7 @@ require('./socket')(server)
 
 app.use(express.json())
 
-app.get('/', (req, res) => {
-  res.send('Hey ya!')
-})
-
-app.use('/test', routePrime)
+app.use('/api', routePrime)
 
 const PORT = process.env.PORT
 

@@ -10,7 +10,7 @@ import styles from './chatManager.module.css'
 function ChatManager(props) {
   //TODO: for 'message:new', if the chat doesn't exist then a new chat should be created
   const {socket} = useContext(SocketContext)
-  const {user: userId} = useContext(UserContext)
+  const {userId} = useContext(UserContext)
 
   const [chatIds, setChatIds] = useState([])
   const [chats, setChats] = useState({})

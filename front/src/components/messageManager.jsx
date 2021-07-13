@@ -7,7 +7,7 @@ import UserContext from '../context/userContext'
 import styles from './messageManager.module.css'
 
 function MessageManager(props){
-  const {user: userId} = useContext(UserContext)
+  const {userId} = useContext(UserContext)
   const {socket} = useContext(SocketContext)
   const [chatMap, setChatMap] = useState({})
   const [loadStatus, setLoadStatus] = useState('begin:new')

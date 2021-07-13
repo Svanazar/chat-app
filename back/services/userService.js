@@ -10,6 +10,17 @@ async function createUser(username) {
   }
 }
 
+async function getUserId(username) {
+  try {
+    const userId = await Users.getUserId(username)
+    return userId
+  } catch(e) {
+    console.error(e)
+    throw {code:1, message: e.message}
+  }
+}
+
 module.exports = {
-  createUser
+  createUser,
+  getUserId,
 }
