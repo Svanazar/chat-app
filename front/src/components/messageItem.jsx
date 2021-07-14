@@ -13,7 +13,7 @@ function MessageItem(props){
   return(
     <li className={`${styles.container} ${fromUser ? styles.fromUser : ""}`}>
       <div className={styles.blob}>
-        <h2 className={styles.username}>{message.source}</h2>
+        <h2 className={styles.username}>{message.sourceName}</h2>
         <p className={styles.content}>{message.content}</p>
         <span className={styles.time}>{timeFromString(message.created)}</span>
       </div>
