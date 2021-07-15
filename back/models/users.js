@@ -18,7 +18,16 @@ async function getOnlineUsers(){
 }
 
 async function getChats(userId){
-  const chatList = await db(tb_chats).whereRaw(`user1 = ${userId} OR user2 = ${userId}`);
+  const queryString = 
+    `SELECT chats.id, username AS chatName
+     FROM chats
+     LEFT JOIN Users
+       ON chats.user1 = Users.id OR chats.user2 = Users.id
+     WHERE Users.id != ${userId}
+        AND (chats.user1 = ${userId} OR chats.user2 = ${userId})
+     ORDER BY chats.id
+    `
+  const [chatList, buffer] = await db.raw(queryString)
   return chatList
 }
 

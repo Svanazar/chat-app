@@ -10,7 +10,7 @@ function ChatItem(props){
   }
 
   return (
-    <li className={styles.item} onClick={handleClick}>{chat.user1} and {chat.user2} {isSelected ? "(sel)" : ""} {chat.hasNew ? "(new)" : ""}</li>
+    <li className={styles.item} onClick={handleClick}>{chat.chatName} {isSelected ? "(sel)" : ""} {chat.hasNew ? "(new)" : ""}</li>
   )
 }
 
