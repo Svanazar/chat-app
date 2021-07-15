@@ -61,7 +61,9 @@ module.exports = (server) => {
 
     socket.on("message:create", async(data, callback) => {
       try {
-        const chat  = await ChatService.getChat(data.chatId)
+        const chat  = await ChatService.getChatOfUser(userId, data.chatId, {
+          columns: ['user1', 'user2']
+        })
         const message = await ChatService.createMessage(userId, data.chatId, data.content)
         callback({status: "ok", body: message})
         let otherUserId = userId === chat.user1 ? chat.user2 : chat.user1

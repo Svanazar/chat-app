@@ -10,8 +10,26 @@ async function createChat(user1, user2){
   return newChat[0]
 }
 
-async function getChat(chatId){
-  const chat = await db(tb_chats).whereRaw(`id = ${chatId}`)
+async function getChatOfUser(userId, chatId, columns){
+  // const queryString =
+  //   `SELECT chats.id, username AS chatName
+  //    FROM chats
+  //    LEFT JOIN Users
+  //      ON chats.user1 = Users.id OR chats.user2 = Users.id
+  //    WHERE chats.id = ${chatId}
+  //      AND Users.id != ${userId}
+  //   `
+
+  const chat = await db.column(columns).select()
+    .from('chats')
+    .joinRaw(`
+      LEFT JOIN Users
+      ON chats.user1 = Users.id OR chats.user2 = Users.id
+    `)
+    .whereRaw(`
+      chats.id = ${chatId}
+      AND Users.id != ${userId}
+    `)
   return chat
 }
 
@@ -36,6 +54,6 @@ async function getChatMessages(chatId, filters={}){
 
 module.exports = {
   createChat,
-  getChat,
+  getChatOfUser,
   getChatMessages
 }

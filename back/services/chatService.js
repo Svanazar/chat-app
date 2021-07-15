@@ -1,9 +1,11 @@
 const {Users, Chats, Messages} = require('../models/index')
 
-async function createChat(userId1, userId2) {
+async function createChat(userId, otherUsername) {
   try {
-    const createdChatId = await Chats.createChat(userId1, userId2)
-    const createdChat = await Chats.getChat(createdChatId)
+    const otherUserId = await Users.getUserId(otherUsername)
+    const createdChatId = await Chats.createChat(userId, otherUserId)
+    let columns = ['chats.id', {chatName: 'username'}]
+    const createdChat = await Chats.getChatOfUser(userId, createdChatId, columns)
     return createdChat[0]
   } catch(e) {
     console.error(e)
@@ -11,9 +13,19 @@ async function createChat(userId1, userId2) {
   }
 }
 
-async function getChat(chatId) {
+/* Parameters
+  filters = {
+    columns: []
+  }
+*/
+
+async function getChatOfUser(userId, chatId, filters={}) {
+  let columns = ['chats.id', {chatName: 'username'}]
+  if(filters.columns) {
+    columns = filters.columns
+  }
   try {
-    const chat = await Chats.getChat(chatId)
+    const chat = await Chats.getChatOfUser(userId, chatId, columns)
     return chat[0]
   } catch(e) {
     console.error(e)
@@ -55,7 +67,7 @@ async function getUserChats(userId) {
 
 module.exports = {
   createChat,
-  getChat,
+  getChatOfUser,
   createMessage,
   getMessages,
   getUserChats
