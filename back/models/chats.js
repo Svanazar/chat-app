@@ -28,6 +28,7 @@ async function getChatMessages(chatId, filters={}){
        ON messages.source = Users.id
      WHERE messages.chat = ${chatId}
      ${afterId ? `AND messages.id > ${afterId}` : ""}
+     ORDER BY messages.id
      `
   const [messages, buffer] = await db.raw(queryString)
   return messages

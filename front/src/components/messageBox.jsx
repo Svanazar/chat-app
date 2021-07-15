@@ -1,18 +1,15 @@
 import React, {useState, useEffect, useContext } from 'react'
-import UserContext from '../context/userContext'
 import SocketContext from '../context/socketContext'
 
 function MessageBox(props){
   const [content, setContent] = useState("")
   const [reqStatus, setReqStatus] = useState("succeeded")
-  const {userId} = useContext(UserContext)
   const {socket} = useContext(SocketContext)
   const {chatId, append} = props
 
   useEffect(() => {
     if(chatId && reqStatus === "begin") {
       const data = {
-        userId,
         chatId,
         content
       }
@@ -26,7 +23,7 @@ function MessageBox(props){
       })
       setReqStatus("pending")
     }
-  }, [reqStatus, userId, chatId, socket, content, append])
+  }, [reqStatus, chatId, socket, content, append])
 
   function handleInputChange(e){
     setContent(e.target.value)
