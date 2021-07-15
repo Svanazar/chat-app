@@ -11,15 +11,6 @@ async function createChat(user1, user2){
 }
 
 async function getChatOfUser(userId, chatId, columns){
-  // const queryString =
-  //   `SELECT chats.id, username AS chatName
-  //    FROM chats
-  //    LEFT JOIN Users
-  //      ON chats.user1 = Users.id OR chats.user2 = Users.id
-  //    WHERE chats.id = ${chatId}
-  //      AND Users.id != ${userId}
-  //   `
-
   const chat = await db.column(columns).select()
     .from('chats')
     .joinRaw(`

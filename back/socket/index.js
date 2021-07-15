@@ -38,6 +38,16 @@ module.exports = (server) => {
       }
     })
 
+    socket.on("chats:get", async (data, callback) => {
+      try{
+        const chat = await ChatService.getChatOfUser(userId, data.chatId)
+        callback({status: "ok", body: chat})
+      } catch(e){
+        console.error(e)
+        callback({status: "error", message: e.message})
+      }
+    })
+
     socket.on("messages:load", async(data, callback) => {
       try{
         const {chatId, ...filters} = data 

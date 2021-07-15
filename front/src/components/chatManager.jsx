@@ -43,6 +43,21 @@ function ChatManager(props) {
   useEffect(() => {
     const listener = (newMessage) => {
       if(newMessage.source === userId || newMessage.chat === selectedId) return;
+      else if(!chats.hasOwnProperty(newMessage.chat)){
+        const data = {
+          userId,
+          chatId: newMessage.chat
+        }
+        socket.emit('chats:get', data, (resp) => {
+          if(resp.status === 'ok'){
+            const newChat = resp.body
+            newChat.hasNew = true
+            setChats(chats => ({...chats, [newChat.id]: newChat}))
+            setChatIds(chatIds => chatIds.concat(newChat.id)) 
+          }
+        })
+        return;
+      }
       setChats(chats => ({
           ...chats,
           [newMessage.chat]: {...chats[newMessage.chat], hasNew: true}
@@ -51,7 +66,7 @@ function ChatManager(props) {
     }
     socket.on('message:new', listener)
     return () => socket.off('message:new', listener)
-  }, [socket, userId, selectedId])
+  }, [socket, chats, userId, selectedId])
 
   function appendChat(newChat){
     //calling setChatIds before setChats results in a error in render for ChatItem
