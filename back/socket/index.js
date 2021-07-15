@@ -1,7 +1,7 @@
 const {Server} = require('socket.io')
 const UserService = require('../services/userService')
 const ChatService = require('../services/chatService')
-const socketMapService = require('../services/socketMapService')
+const SocketMapService = require('../services/socketMapService')
 
 module.exports = (server) => {
   const io = new Server(server)
@@ -19,13 +19,13 @@ module.exports = (server) => {
   io.on('connection', (socket) => {
     const userId = socket.userId
     console.log(`user ${userId} vi socket ${socket.id} connected`)
-    socketMapService.addUserId(userId, socket.id)
+    SocketMapService.addUserId(userId, socket.id)
 
     socket.emit('session', {userId})
 
     socket.on("disconnect", () => {
       console.log(`user ${userId} vi socket ${socket.id} disconnected`)
-      socketMapService.removeUserId(userId)
+      SocketMapService.removeUserId(userId)
     })
 
     socket.on("chats:load", async(callback) => {
@@ -65,7 +65,7 @@ module.exports = (server) => {
         const message = await ChatService.createMessage(userId, data.chatId, data.content)
         callback({status: "ok", body: message})
         let otherUserId = userId === chat.user1 ? chat.user2 : chat.user1
-        let otherSocket = socketMapService.getSocketId(otherUserId)
+        let otherSocket = SocketMapService.getSocketId(otherUserId)
         if(otherSocket) {
           io.to(otherSocket).emit("message:new", message)
         }
