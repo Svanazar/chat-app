@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext } from 'react'
 import SocketContext from '../context/socketContext'
+import styles from './messageBox.module.css'
 
 function MessageBox(props){
   const [content, setContent] = useState("")
@@ -38,13 +39,15 @@ function MessageBox(props){
 
   return (
     <>
-    <form onSubmit={handleSubmit}>
-      <label>
-        Message:
-        <input type="text" value={content} onChange={handleInputChange} />
-      </label>
-      <input type="submit" value="Send"/>
-    </form>
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Message:
+          <input type="text" value={content} onChange={handleInputChange} />
+        </label>
+        <input type="submit" value="Send"/>
+      </form>
+    </div>
     </>
   )
 }

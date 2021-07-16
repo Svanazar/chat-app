@@ -6,8 +6,10 @@
 
 .sideBar{
     grid-column: 1 / 2;
+    height: 100%;
 }
 
 .midPane{
     grid-column: 2 / -1;
+    height: 100%;
 }
