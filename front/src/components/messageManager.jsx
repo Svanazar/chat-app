@@ -123,7 +123,9 @@ function MessageManager(props){
     <>
     <div className={styles.container}>
       <div className={styles.messagePane}>
-        {messageList.length> 0 ? <ul>{messageList}</ul> : "EMPTY"}
+        {messageList.length> 0
+        ? <ul>{messageList}</ul>
+        : <div className={styles.pill}><span>No messages</span></div>}
       </div>
       <MessageBox chatId={selChatId} append={appendToChat} />
     </div>

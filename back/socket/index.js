@@ -10,6 +10,7 @@ module.exports = (server) => {
     try{
       const userId = await UserService.getUserId(username)
       socket.userId = userId
+      socket.username = username
       return next()
     } catch(e){
       return next(new Error(e.message))
@@ -21,11 +22,21 @@ module.exports = (server) => {
     console.log(`user ${userId} vi socket ${socket.id} connected`)
     SocketMapService.addUserId(userId, socket.id)
 
-    socket.emit('session', {userId})
+    socket.emit('session', {userId, username: socket.username})
 
     socket.on("disconnect", () => {
       console.log(`user ${userId} vi socket ${socket.id} disconnected`)
       SocketMapService.removeUserId(userId)
+    })
+
+    socket.on("users:load", async(callback) => {
+      try {
+        const userList = await UserService.getUsernames(userId)
+        callback({status: "ok", body: userList})
+      } catch(e) {
+        console.error(e)
+        callback({status: "error", message: e.message})
+      }
     })
 
     socket.on("chats:load", async(callback) => {

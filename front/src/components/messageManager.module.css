@@ -5,7 +5,25 @@
 }
 
 .messagePane {
+    position: relative;
     overflow-y: auto;
     flex: auto;
     height: 0;
+    background-color: #e5ddd5;
+}
+
+.pill {
+    position: absolute;
+    top: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.pill > span {
+    background-color: #e0f1fa;
+    border-radius: 10px;
+    padding: 5px 10px;
+    color: #00000073;
+    font-size: 14px;
 }

@@ -20,7 +20,18 @@ async function getUserId(username) {
   }
 }
 
+async function getUsernames(userId) {
+  try {
+    const userList = await Users.getUsernamesExceptId(userId)
+    return userList
+  } catch(e) {
+    console.error(e)
+    throw {code: 1, message: e.message}
+  }
+}
+
 module.exports = {
   createUser,
   getUserId,
+  getUsernames
 }

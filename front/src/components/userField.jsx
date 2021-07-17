@@ -1,6 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react'
 import SocketContext from '../context/socketContext'
 
+import styles from './userField.module.css'
+
 function UserField(props) {
   const {socket} = useContext(SocketContext)
   const [username, setUsername] = useState("")
@@ -62,24 +64,31 @@ function UserField(props) {
     setReqStatus('begin')
   }
 
-  function toggleMode(){
+  function toggleMode(e){
     if(mode === 'login') setMode('register')
     else if(mode === 'register') setMode('login')
   }
 
   return (
-    <>
+    <div className={styles.container}>
+    <div className={styles.header}>
+      <h2>{mode === 'login' ? "Welcome Back!" : "New User!"}</h2>
+    </div>
     <form onSubmit={handleSubmit}>
       <label>
-        username:
-        <input type="text" value={username} onChange={handleInputChange} />
+        Enter Username
       </label>
-      <input type="submit" value={mode === 'login' ? "Login" : "Register"}/>
+      <input className={styles.userInput} required type="text" value={username} onChange={handleInputChange} />
     </form>
-    <button onClick={toggleMode}>
-      {mode === 'login' ? "Create New Account" : "Login existing user"}
-    </button>
-    </>
+    <div className={styles.footerRow}>
+      <button className={styles.toggleButton} onClick={toggleMode}>
+        {mode === 'login' ? "Create New Account" : "Back"}
+      </button>
+      <button className={styles.submitButton} onClick={handleSubmit}>
+        {mode === 'login' ? "Login" : "Register"}
+      </button>
+    </div>
+    </div>
   )
 }
 

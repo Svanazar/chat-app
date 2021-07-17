@@ -17,6 +17,14 @@ async function getOnlineUsers(){
   return userList
 }
 
+async function getUsernamesExceptId(userId) {
+  const userList = await db.column('username').select()
+    .from('Users')
+    .whereRaw(`id != ${userId}`)
+  
+  return userList
+}
+
 async function getChats(userId){
   const queryString = 
     `SELECT chats.id, username AS chatName
@@ -34,6 +42,7 @@ async function getChats(userId){
 module.exports = {
   createUser,
   getUserId,
+  getUsernamesExceptId,
   getOnlineUsers,
   getChats
 }

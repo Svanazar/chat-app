@@ -10,7 +10,17 @@ function ChatItem(props){
   }
 
   return (
-    <li className={styles.item} onClick={handleClick}>{chat.chatName} {isSelected ? "(sel)" : ""} {chat.hasNew ? "(new)" : ""}</li>
+    <li className={`${styles.item} ${isSelected && styles.selected}`} onClick={handleClick}>
+      <div className={styles.icon}>
+        <div></div>
+      </div>
+      <div className={styles.content}>
+        <span className={styles.title}>{chat.chatName}</span>
+      </div>
+      <div className={styles.info}>
+        {chat.hasNew && <span className={styles.greenDot}></span>}
+      </div>
+    </li>
   )
 }
 

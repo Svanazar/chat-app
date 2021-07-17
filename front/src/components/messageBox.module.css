@@ -1,4 +1,36 @@
 .container {
     flex: initial;
     padding: 20px;
+    background-color: #f0f0f0;
+    
+}
+.growWrapper {
+    display: grid;
+    width: 100%;
+    font-size: 16px;
+    line-height: 1.4;
+}
+
+.growWrapper > div {
+    white-space: pre-wrap;
+    overflow: hidden;
+    overflow-wrap: break-word;
+    visibility: hidden;
+}
+
+.textInput{
+    resize: none;
+}
+
+.textInput,
+.growWrapper > div {
+    font: inherit;
+    max-height: 7em;
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 20px;
+    margin: 0;
+    border: 1px solid white;
+    grid-area: 1 / 1 / 2 / 2;
+    border-radius: 21px;
 }

@@ -26,26 +26,29 @@ function MessageBox(props){
     }
   }, [reqStatus, chatId, socket, content, append])
 
+
+  function handleKey(e) {
+    if(e.key === 'Enter' && !e.shiftKey) {
+      setReqStatus('begin')
+      e.preventDefault()
+    }
+  }
+
   function handleInputChange(e){
     setContent(e.target.value)
   }
-
-  function handleSubmit(e) {
-    e.preventDefault()
-    setReqStatus("begin")
-  }
-
+  
   if(!chatId) return null
 
   return (
     <>
     <div className={styles.container}>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Message:
-          <input type="text" value={content} onChange={handleInputChange} />
-        </label>
-        <input type="submit" value="Send"/>
+      <form>
+        <label></label>
+        <div className={styles.growWrapper}>
+          <div>{content}</div>
+          <textarea className={styles.textInput} placeholder="Type message here" type="text" value={content} onKeyDown={handleKey} onChange={handleInputChange} />
+        </div>
       </form>
     </div>
     </>

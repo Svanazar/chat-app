@@ -1,0 +1,49 @@
+.container {
+    position:relative;
+    z-index: 1;
+    background-color: white;
+    padding: 30px;
+    width: 350px;
+    border-radius: 10px;
+}
+
+.container label {
+    display: block;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+.container form {
+    padding: 10px 0;
+}
+
+.userInput {
+    padding: 10px;
+    border-radius: 7px;
+    border: 1px solid gray;
+    display: block;
+    width: 100%;
+}
+
+.footerRow {
+    display: flex;
+    justify-content: right;
+    padding-top: 20px;
+}
+
+.footerRow button {
+    padding: 8px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    border: 0;
+}
+
+.toggleButton {
+    background-color: #edebeb;
+}
+
+.submitButton {
+    margin-left: 20px;
+    background-color: #06d755;
+    color: white;
+}
