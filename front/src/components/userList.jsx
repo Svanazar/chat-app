@@ -24,7 +24,7 @@ function UserList(props) {
       })
       setReqStatus('loading')
     }
-  })
+  }, [socket, reqStatus])
 
   useEffect(() => {
     if(reqStatus === 'begin:create') {
@@ -37,7 +37,7 @@ function UserList(props) {
       })
       setReqStatus("creating")
     }
-  })
+  }, [socket, reqStatus, append, selectedUsername])
 
 
   function beginRequest(username){
