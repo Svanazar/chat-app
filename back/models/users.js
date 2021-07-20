@@ -17,8 +17,8 @@ async function getOnlineUsers(){
   return userList
 }
 
-async function getUsernamesExceptId(userId) {
-  const userList = await db.column('username').select()
+async function getUsersExceptId(userId) {
+  const userList = await db.column('id', 'username').select()
     .from('Users')
     .whereRaw(`id != ${userId}`)
   
@@ -27,13 +27,35 @@ async function getUsernamesExceptId(userId) {
 
 async function getChats(userId){
   const queryString = 
-    `SELECT chats.id, username AS chatName
-     FROM chats
-     LEFT JOIN Users
-       ON chats.user1 = Users.id OR chats.user2 = Users.id
-     WHERE Users.id != ${userId}
-        AND (chats.user1 = ${userId} OR chats.user2 = ${userId})
-     ORDER BY chats.id
+    `(
+      SELECT chats.id, chats.title AS chatName, chats.private
+      FROM participants
+      INNER JOIN chats
+        ON participants.chat = chats.id
+      WHERE participants.user = ${userId}
+        AND chats.private = 0
+     )
+     UNION
+     (
+      SELECT chats.id, Users.username as chatName, chats.private
+      FROM participants
+      INNER JOIN chats
+        ON participants.chat = chats.id
+        AND chats.private = 1
+        AND participants.user = ${userId}
+      INNER JOIN (
+        SELECT chats.id, user
+        from participants
+        inner join chats
+          on participants.chat = chats.id
+        where participants.user != ${userId}
+        and chats.private = 1
+      ) AS other
+        ON chats.id = other.id
+      INNER JOIN Users
+        ON other.user = Users.id
+     )
+     ORDER BY id
     `
   const [chatList, buffer] = await db.raw(queryString)
   return chatList
@@ -42,7 +64,7 @@ async function getChats(userId){
 module.exports = {
   createUser,
   getUserId,
-  getUsernamesExceptId,
+  getUsersExceptId,
   getOnlineUsers,
   getChats
 }

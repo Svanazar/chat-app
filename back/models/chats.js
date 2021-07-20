@@ -1,13 +1,41 @@
 const db = require('../db')
 const {tb_users, tb_chats, tb_messages} = require('./consts')
 
-async function createChat(user1, user2){
+async function createChat(title, userIds, private){
   //Check against (u, v) and (v, u) existing simultaneously by allowing only ordered pairs
-  if(user1 > user2) {
-    [user1, user2] = [user2, user1]
+  // if(user1 > user2) {
+  //   [user1, user2] = [user2, user1]
+  // }
+  if(private) {
+
   }
-  const newChat = await db(tb_chats).insert({user1, user2})
-  return newChat[0]
+  const [newChatId] = await db(tb_chats).insert({title, private})
+  for(const id of userIds) {
+    await db('participants').insert({user: id, chat: newChatId})
+  }
+  return newChatId
+}
+
+async function getChat(chatId, userId) {
+  const queryString = `
+    SELECT chats.id, chats.title as chatName, chats.private
+    from chats
+    where chats.id = ${chatId}
+    and chats.private = 0
+    UNION (
+      SELECT chats.id, Users.username as chatName, chats.private
+      from chats
+      inner join participants
+        on chats.id = participants.chat
+        and chats.id = ${chatId}
+        and chats.private = 1
+        and participants.user != ${userId}
+      inner join Users
+        on participants.user = Users.id
+    )
+  `
+  const [chat, buffer] = await db.raw(queryString)
+  return chat
 }
 
 async function getChatOfUser(userId, chatId, columns){
@@ -45,6 +73,7 @@ async function getChatMessages(chatId, filters={}){
 
 module.exports = {
   createChat,
+  getChat,
   getChatOfUser,
   getChatMessages
 }

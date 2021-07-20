@@ -1,13 +1,25 @@
 const {Users, Chats, Messages} = require('../models/index')
 
-async function createChat(userId, otherUsername) {
+async function createChat(title, userIds, private=false, creatorId=undefined) {
   try {
-    const otherUserId = await Users.getUserId(otherUsername)
-    const createdChatId = await Chats.createChat(userId, otherUserId)
-    let columns = ['chats.id', {chatName: 'username'}]
-    const createdChat = await Chats.getChatOfUser(userId, createdChatId, columns)
+    if(private) title = undefined
+    const memberIds = [creatorId, ...userIds]
+    const createdChatId = await Chats.createChat(title, memberIds, private)
+    // let columns = ['chats.id', {chatName: 'username'}]
+    // const createdChat = await Chats.getChatOfUser(userId, createdChatId, columns)
+    const createdChat = await Chats.getChat(createdChatId, creatorId)
     return createdChat[0]
   } catch(e) {
+    console.error(e)
+    throw {code: 1, message: e.message}
+  }
+}
+
+async function getChat(chatId, userId) {
+  try {
+    const [chat] = await Chats.getChat(chatId, userId)
+    return chat
+  } catch(e){
     console.error(e)
     throw {code: 1, message: e.message}
   }
@@ -67,6 +79,7 @@ async function getUserChats(userId) {
 
 module.exports = {
   createChat,
+  getChat,
   getChatOfUser,
   createMessage,
   getMessages,

@@ -16,9 +16,9 @@ router.post('/user', async (req, res) => {
 
 router.get('/createChat', async (req, res) => {
   try{
-    const {user1, user2} = req.body
-    const createdChatId = await ChatService.createChat(user1, user2)
-    res.json({createdChatId})
+    const {title, userIds, private, userId} = req.body
+    const createdChat = await ChatService.createChat(title, userIds, private, userId)
+    res.json({createdChat})
   } catch(e){
     res.status(500).json(e)
   }

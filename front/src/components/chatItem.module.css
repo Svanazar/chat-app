@@ -42,3 +42,9 @@
     background-color: #06d755;
     display: inline-block; 
 }
+
+.itemList {
+    flex: auto;
+    height: 0;
+    overflow-y: auto;
+}

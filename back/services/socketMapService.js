@@ -1,10 +1,10 @@
 const userSocketMap = new Map()
 
-function addUserId(userId, socketId){
-  userSocketMap.set(userId, socketId)
+function addUserId(userId, socket){
+  userSocketMap.set(userId, socket)
 }
 
-function getSocketId(userId){
+function getSocket(userId){
   return userSocketMap.get(userId)
 }
 
@@ -15,13 +15,13 @@ function removeUserId(userId){
 function listAll(){
   console.log("map values:")
   for(let [key, value] of userSocketMap){
-    console.log(key, value)
+    console.log(typeof key, value.id)
   }
 }
 
 module.exports = {
   addUserId,
-  getSocketId,
+  getSocket,
   removeUserId,
   listAll
 }

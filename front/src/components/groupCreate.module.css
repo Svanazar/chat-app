@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.inputContainer {
+    padding: 10px 5px;
+    background-color: #f6f6f6;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.queryInput {
+    padding: 10px;
+    padding-left: 20px;
+    border: none;
+    border-radius: 20px;
+    width: 100%;
+}
+
+.header {
+    padding: 25px 25px;
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 16px;
+}
+
+.submit {
+    display: flex;
+    justify-content: center;
+    padding-bottom: 30px;
+}
+
+.submit > div{
+    background-color: #09e85e;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}

@@ -20,9 +20,9 @@ async function getUserId(username) {
   }
 }
 
-async function getUsernames(userId) {
+async function getUsers(userId) {
   try {
-    const userList = await Users.getUsernamesExceptId(userId)
+    const userList = await Users.getUsersExceptId(userId)
     return userList
   } catch(e) {
     console.error(e)
@@ -33,5 +33,5 @@ async function getUsernames(userId) {
 module.exports = {
   createUser,
   getUserId,
-  getUsernames
+  getUsers
 }

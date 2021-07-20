@@ -44,6 +44,15 @@ function ChatManager(props) {
   }, [socket, userId])
 
   useEffect(() => {
+    const listener = (newChat) => {
+      setChats(chats => ({...chats, [newChat.id]: newChat}))
+      setChatIds(chatIds => chatIds.concat(newChat.id))
+    }
+    socket.on('group:new', listener)
+    return () => socket.off('group:new', listener)
+  }, [socket])
+
+  useEffect(() => {
     const listener = (newMessage) => {
       if(newMessage.source === userId || newMessage.chat === selectedId) return;
       else if(!chats.hasOwnProperty(newMessage.chat)){
